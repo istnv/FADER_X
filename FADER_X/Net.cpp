@@ -54,6 +54,7 @@ void Net::setup(){
 extern EthernetUDP globalUDP;
 extern byte globalPage;
 extern byte globalMode;
+extern byte globalHalf;
 extern QLab qlab;
 extern void channelUpdateAll();
 char udpBuf[Ethernet.mtu() - 20 - 8];
@@ -75,8 +76,10 @@ void Net::loop(){
     OSCMessage msg(udpBuf, udpPacketSize);
     if(msg.getAddress()=="/page"){
       byte p = msg.getInt(0);
+      byte h = msg.getInt(1);
       if(p==1 || p==2 || p==3 || p==4){
         globalPage = p-1;
+        globalHalf = abs(h);
         if(globalMode==3){ qlab.changePage(); }
         channelUpdateAll();
       }

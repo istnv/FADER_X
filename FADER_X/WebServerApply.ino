@@ -104,7 +104,16 @@ boolean applySettings(EthernetClient*client, String*b){
   int e2 = containsParam(b, "e2");
 
   int x1 = containsParam(b, "x1");
-  
+
+  int gma[7];
+  gma[0] = containsParam(b, "maindev");
+  gma[1] = containsParam(b, "maingrp");
+  gma[2] = containsParam(b, "mainfmt");
+  gma[3] = containsParam(b, "maoutdev");
+  gma[4] = containsParam(b, "maoutgrp");
+  gma[5] = containsParam(b, "maoutfmt");
+  gma[6] = containsParam(b, "masendto");
+
   // Motor Settings
 
   if(t0){
@@ -312,6 +321,28 @@ boolean applySettings(EthernetClient*client, String*b){
     }
   }
 
+  // GrandMA2 
+  for(int i=0; i<32; i++) {
+    String ef = String((i/8+1)*10 + (i%8+1));
+    int ma = containsParam(b, "map" + ef );
+    if (ma) {
+      int v = getParameter(b, ma).toInt();
+      EEPROM.put(160+i*2, v);
+    }
+    ma = containsParam(b, "maf" + ef);
+    if (ma) {
+      int v = getParameter(b, ma).toInt();
+      EEPROM.put(161+i*2, v);
+    }
+  }
+
+  for(int i=0; i<7; i++) {
+    if (gma[i]) {
+      int v = getParameter(b, gma[i]).toInt();
+      EEPROM.update(153+i,v);
+    }
+  }
+  
   // Channels
   
   if(ch1A){

@@ -7,11 +7,12 @@
 #include "Eos.h"
 #include "X32.h"
 #include "DiGiCo.h"
+#include "MA2.h"
 #include <Bounce2.h>
 using namespace qindesign::network;
 
-#define MAJOR 0
-#define SUBVERSION 1
+#define MAJOR 1
+#define SUBVERSION 0
 #define PATCH 0
 
 EthernetServer globalWebServer(80);
@@ -24,6 +25,7 @@ Midi midi;
 QLab qlab;
 Eos eos;
 X32 x32;
+MA2 ma2;
 DiGiCo digico;
 
 Fader fader1(A9, 0);
@@ -40,6 +42,7 @@ boolean globalRotated = false;
 int globalFaderTargets[255];
 byte globalFaderChannels[32];
 byte globalPage = 0;
+byte globalHalf = 0;
 byte globalTouchSensitivity = 128;
 unsigned short globalMessageWaitMillis = 33;
 int globalMotorMinSpeed = 150;
@@ -60,6 +63,7 @@ byte versionSub;
 #define OP_Midi 1
 #define OP_Midi_NoMotor 2
 #define OP_QLab 3
+#define OP_MA2 4
 #define OP_Eos 6
 #define OP_DiGiCo 7
 #define OP_X32 8
@@ -111,6 +115,9 @@ void loop() {
   }else if(globalMode==OP_DiGiCo){
     digico.loop();
     
+  }else if(globalMode==OP_MA2){
+    ma2.loop();
+    
   }else if(globalMode>=OP_Dance){
     danceLoop();
     
@@ -151,10 +158,10 @@ void loop() {
     }
   }
 
-  if(millis() - lastSerialLog > 10000){
-    lastSerialLog = millis();
-    serialHeartbeat();
-  }
+  // if(millis() - lastSerialLog > 10000){
+  //   lastSerialLog = millis();
+  //   serialHeartbeat();
+  // }
 
  
 
@@ -180,6 +187,9 @@ void touchEvent(Fader* fader){
     
   }else if(globalMode==OP_DiGiCo){
     digico.touchEvent(channel, fader);
+
+  }else if(globalMode==OP_MA2){
+    ma2.touchEvent(channel, fader);
     
   }
 }

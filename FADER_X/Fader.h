@@ -1,6 +1,13 @@
 #include <Arduino.h>
 #pragma once
 
+#define FMODE_Disabled -1
+#define FMODE_Rest 0
+#define FMODE_Touch 1
+#define FMODE_Motor 2
+#define FMODE_Pause 3
+#define EaseSpeed 400.0
+
 extern int globalFaderTargets[255];
 
 class Fader {

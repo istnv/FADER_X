@@ -15,7 +15,19 @@ void newSettings(){
 
   for(byte i=0; i<32; i++){
     globalFaderChannels[i] = EEPROM.read(66+i);
+    ma2.maFaders[i*3] = EEPROM.read(160+i*2);
+    ma2.maFaders[i*3+1] = EEPROM.read(161+i*2);
+    ma2.maFaders[i*3+2] = 0x90;
   }
+  
+  ma2.listenDevice = EEPROM.read(153);
+  ma2.listenGroup = EEPROM.read(154);
+  ma2.listenFormat = EEPROM.read(155);
+  ma2.sendDevice = EEPROM.read(156);
+  ma2.sendGroup  = EEPROM.read(157);
+  ma2.sendFormat = EEPROM.read(158);
+  ma2.sendTo = EEPROM.read(159);
+
   for(byte i=0; i<255; i++){
     globalFaderTargets[i] = 0;
   }
@@ -41,7 +53,7 @@ void newSettings(){
     fader8.setup(7);
   }
 
-  delay(10);
+  delay(50);
 
   fader1.setTargetToCurrentPosition();
   fader2.setTargetToCurrentPosition();
@@ -114,6 +126,8 @@ void newSettings(){
   }else if(globalMode==OP_DiGiCo){
     digico.setup();
     
+  }else if(globalMode==OP_MA2) {
+    ma2.setup();
   }
   
   if(globalFirstBoot){
@@ -212,6 +226,8 @@ void factoryReset(){
 
   for(byte i=0; i<32; i++){
     EEPROM.write(66+i, i+1);
+    EEPROM.write(160+i*2,45); //MA Page
+    EEPROM.write(161+i*2,i+1); //MA Fader
   }
 
   EEPROM.write(128, 12); // QLab Max Volume
@@ -230,5 +246,15 @@ void factoryReset(){
   EEPROM.write(140, 1); // ETC Eos Fader Bank
   EEPROM.write(141, 40); // ETC Eos Fader Count
 
+  EEPROM.write(153, 0); // MA2 Listen Device
+  EEPROM.write(154, 1); // MA2 Listen Group
+  EEPROM.write(155, 0x7f); // MA2 Listen MSC Format (default=ALL)
+  
+  EEPROM.write(156, 0); // MA2 Send Device
+  EEPROM.write(157, 1); // MA2 Send Group
+  EEPROM.write(158, 0x7f); // MA2 Send MSC Format (default=ALL)
+  
+  EEPROM.write(159, 0x7f); // MA2 Send To (dev/group/ALL)
+  
   Serial.println("Reset to Factory settings");
 }

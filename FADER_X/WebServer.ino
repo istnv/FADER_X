@@ -86,8 +86,8 @@ String bodyTemplate = "<body>"
   "<tr><td>Subnet Mask</td><td><input value='{net-subnet}' name='n3' maxLength='15'></td><td></td></tr>"
   "<tr><td>Gateway</td><td><input value='{net-gateway}' name='n4' maxLength='15'></td><td></td></tr>"
   "<tr><td>Receive Port</td><td><input value='{net-port}' type='number' name='n5' min='1' max='65535'></td><td class='note'>Ignored in operation modes that require a specific port number</td></tr>"
-  "<tr><td>OSC Destination IP</td><td><input value='{net-destIP}' name='n6' maxLength='15'></td><td></td></tr>"
-  "<tr><td>OSC Destination Port</td><td><input value='{net-destPort}' type='number' name='n7' min='1' max='65535'></td><td class='note'>Ignored in operation modes that require a specific port number</td></tr>"
+  "<tr><td>Destination IP</td><td><input value='{net-destIP}' name='n6' maxLength='15'></td><td></td></tr>"
+  "<tr><td>Destination Port</td><td><input value='{net-destPort}' type='number' name='n7' min='1' max='65535'></td><td class='note'>Ignored in operation modes that require a specific port number</td></tr>"
   "<tr><td>MAC Address</td><td><em>{net-mac}</em></td><td></td></tr>"
 "</table>"
 "<table class='block'>"
@@ -96,6 +96,7 @@ String bodyTemplate = "<body>"
     "<option value='1' {op-1}>MIDI</option>"
     "<option value='2' {op-2}>MIDI (Motors disabled)</option>"
     "<option value='3' {op-3}>QLab</option>"
+    "<option value='4' {op-4}>GrandMA2</option>"
     "<option value='6' {op-6}>ETC Eos</option>"
     "<option value='7' {op-7}>DiGiCo</option>"
     "<option value='8' {op-8}>X32/M32</option>"
@@ -131,7 +132,118 @@ String bodyTemplate = "<body>"
     "<option value='6' {x1-6}>Matrix</option>"
   "</select></td><td></td></tr>"
 "</table>"
-"<table class='block'>"
+"<table class='block mode'>"
+  "<tr><th colspan='9'>&#11153;&nbsp;&nbsp; GrandMA2 MSC over Ethernet</th></tr>"
+  "<tr><td colspan='1'></td><td>Device</td><td>Group</td><td>Format</td><td>Send To</td></tr>"
+  "<tr><td>Listen</td>"
+    "<td><input type='number' name='maindev' value='{main-dev}' min='0' max='111'></td>"
+    "<td><input type='number' name='maingrp' value='{main-grp}' min='1' max='15'></td>"
+    "<td><select name='mainfmt'>"
+      "<option value='1' {main-f1}>General Light</option>"
+      "<option value='2' {main-f2}>Moving Light</option>"
+      "<option value='127' {main-f3}>All devices</option>"
+    "</select></td>"
+    "<td colspan='2'>&nbsp</td>"
+  "</tr>"
+  "<tr><td>Send</td>"
+    "<td><input type='number' name='maoutdev' value='{maout-dev}' min='0' max='111'></td>"
+    "<td><input type='number' name='maoutgrp' value='{maout-grp}' min='1' max='15'></td>"
+    "<td><select name='maoutfmt'>"
+      "<option value='1' {maout-f1}>General Light</option>"
+      "<option value='2' {maout-f2}>Moving Light</option>"
+      "<option value='127' {maout-f3}>All devices</option>"
+    "</select></td>"
+    "<td><select name='masendto'>"
+      "<option value='1' {maout-s2}>Device</option>"
+      "<option value='2' {maout-s2}>Group</option>"
+      "<option value='127' {maout-s3}>All</option>"
+    "</select></td>"
+  "</tr>"
+"</table><table class='block mode'>"
+  "<tr><td colspan='1'></td><td colspan='2'>Page 1</td><td colspan='2'>Page 2</td><td colspan='2'>Page 3</td><td colspan='2'>Page 4</td></tr>"
+  "<tr><td>#</td><td>Exec</td><td>Fader</td><td>Exec</td><td>Fader</td><td>Exec</td><td>Fader</td><td>Exec</td><td>Fader</td></tr>"
+   "<tr><td>1</td>"
+      "<td><input type='number' name='map11' value='{map-11}' min='1' max='45'></td>"
+      "<td><input type='number' name='maf11' value='{maf-11}' min='1' max='127'></td>"
+      "<td><input type='number' name='map21' value='{map-21}' min='1' max='45'></td>"
+      "<td><input type='number' name='maf21' value='{maf-21}' min='1' max='127'></td>"
+      "<td><input type='number' name='map31' value='{map-31}' min='1' max='45'></td>"
+      "<td><input type='number' name='maf31' value='{maf-31}' min='1' max='127'></td>"
+      "<td><input type='number' name='map41' value='{map-41}' min='1' max='45'></td>"
+      "<td><input type='number' name='maf41' value='{maf-41}' min='1' max='127'></td>"
+   "</tr>"
+   "<tr><td>2</td>"
+      "<td><input type='number' name='map12' value='{map-12}' min='1' max='45'></td>"
+      "<td><input type='number' name='maf12' value='{maf-12}' min='1' max='127'></td>"
+      "<td><input type='number' name='map22' value='{map-22}' min='1' max='45'></td>"
+      "<td><input type='number' name='maf22' value='{maf-22}' min='1' max='127'></td>"
+      "<td><input type='number' name='map32' value='{map-32}' min='1' max='45'></td>"
+      "<td><input type='number' name='maf32' value='{maf-32}' min='1' max='127'></td>"
+      "<td><input type='number' name='map42' value='{map-42}' min='1' max='45'></td>"
+      "<td><input type='number' name='maf42' value='{maf-42}' min='1' max='127'></td>"
+   "</tr>"
+   "<tr><td>3</td>"
+      "<td ><input type='number' name='map13' value='{map-13}' min='1' max='45'></td>"
+      "<td ><input type='number' name='maf13' value='{maf-13}' min='1' max='127'></td>"
+      "<td ><input type='number' name='map23' value='{map-23}' min='1' max='45'></td>"
+      "<td ><input type='number' name='maf23' value='{maf-23}' min='1' max='127'></td>"
+      "<td ><input type='number' name='map33' value='{map-33}' min='1' max='45'></td>"
+      "<td ><input type='number' name='maf33' value='{maf-33}' min='1' max='127'></td>"
+      "<td ><input type='number' name='map43' value='{map-43}' min='1' max='45'></td>"
+      "<td ><input type='number' name='maf43' value='{maf-43}' min='1' max='127'></td>"
+   "</tr>"
+   "<tr><td>4</td>"
+      "<td ><input type='number' name='map14' value='{map-14}' min='1' max='45'></td>"
+      "<td ><input type='number' name='maf14' value='{maf-14}' min='1' max='127'></td>"
+      "<td ><input type='number' name='map24' value='{map-24}' min='1' max='45'></td>"
+      "<td ><input type='number' name='maf24' value='{maf-24}' min='1' max='127'></td>"
+      "<td ><input type='number' name='map34' value='{map-34}' min='1' max='45'></td>"
+      "<td ><input type='number' name='maf34' value='{maf-34}' min='1' max='127'></td>"
+      "<td ><input type='number' name='map44' value='{map-44}' min='1' max='45'></td>"
+      "<td ><input type='number' name='maf44' value='{maf-44}' min='1' max='127'></td>"
+   "</tr>"
+   "<tr><td>5</td>"
+      "<td ><input type='number' name='map15' value='{map-15}' min='1' max='45'></td>"
+      "<td ><input type='number' name='maf15' value='{maf-15}' min='1' max='127'></td>"
+      "<td ><input type='number' name='map25' value='{map-25}' min='1' max='45'></td>"
+      "<td ><input type='number' name='maf25' value='{maf-25}' min='1' max='127'></td>"
+      "<td ><input type='number' name='map35' value='{map-35}' min='1' max='45'></td>"
+      "<td ><input type='number' name='maf35' value='{maf-35}' min='1' max='127'></td>"
+      "<td ><input type='number' name='map45' value='{map-45}' min='1' max='45'></td>"
+      "<td ><input type='number' name='maf45' value='{maf-45}' min='1' max='127'></td>"
+   "</tr>"
+   "<tr><td>6</td>"
+      "<td ><input type='number' name='map16' value='{map-16}' min='1' max='45'></td>"
+      "<td ><input type='number' name='maf16' value='{maf-16}' min='1' max='127'></td>"
+      "<td ><input type='number' name='map26' value='{map-26}' min='1' max='45'></td>"
+      "<td ><input type='number' name='maf26' value='{maf-26}' min='1' max='127'></td>"
+      "<td ><input type='number' name='map36' value='{map-36}' min='1' max='45'></td>"
+      "<td ><input type='number' name='maf36' value='{maf-36}' min='1' max='127'></td>"
+      "<td ><input type='number' name='map46' value='{map-46}' min='1' max='45'></td>"
+      "<td ><input type='number' name='maf46' value='{maf-46}' min='1' max='127'></td>"
+   "</tr>"
+   "<tr><td>7</td>"
+      "<td ><input type='number' name='map17' value='{map-17}' min='1' max='45'></td>"
+      "<td ><input type='number' name='maf17' value='{maf-17}' min='1' max='127'></td>"
+      "<td ><input type='number' name='map27' value='{map-27}' min='1' max='45'></td>"
+      "<td ><input type='number' name='maf27' value='{maf-27}' min='1' max='127'></td>"
+      "<td ><input type='number' name='map37' value='{map-37}' min='1' max='45'></td>"
+      "<td ><input type='number' name='maf37' value='{maf-37}' min='1' max='127'></td>"
+      "<td ><input type='number' name='map47' value='{map-47}' min='1' max='45'></td>"
+      "<td ><input type='number' name='maf47' value='{maf-47}' min='1' max='127'></td>"
+   "</tr>"
+   "<tr><td>8</td>"
+      "<td ><input type='number' name='map18' value='{map-18}' min='1' max='45'></td>"
+      "<td ><input type='number' name='maf18' value='{maf-18}' min='1' max='127'></td>"
+      "<td ><input type='number' name='map28' value='{map-28}' min='1' max='45'></td>"
+      "<td ><input type='number' name='maf28' value='{maf-28}' min='1' max='127'></td>"
+      "<td ><input type='number' name='map38' value='{map-38}' min='1' max='45'></td>"
+      "<td ><input type='number' name='maf38' value='{maf-38}' min='1' max='127'></td>"
+      "<td ><input type='number' name='map48' value='{map-48}' min='1' max='45'></td>"
+      "<td ><input type='number' name='maf48' value='{maf-48}' min='1' max='127'></td>"
+   "</tr>"
+
+"</table>""<table class='block'>"
   "<tr><th colspan='3'>Fader Tuning</th></tr>"
   "<tr><td>Touch Sensitivity</td><td><input value='{touch-sense}' type='number' name='t4' min='4' max='200'></td><td class='note'>Lower numbers mean more sensitivty and smoother slow fades, but potentially also phantom touches.</td></tr></tr>"
   "<tr><td>Message wait</td><td><input value='{msg-wait}' type='number' name='t0'</td><td class='note'>Milliseconds to wait between sending OSC or MIDI messages</td></tr></tr>"
@@ -156,7 +268,7 @@ String bodyTemplate = "<body>"
 "</script>"
 "</body></html>";
 
-char htmlBuf[9000];
+char htmlBuf[14000];
 
 char letters[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
@@ -368,6 +480,36 @@ void generateIndex(){
   temp.replace("{ch-7D}", globalFaderChannels[30]);
   temp.replace("{ch-8D}", globalFaderChannels[31]);
   
+  String ep;
+  for(int i=0; i<32; i++) {
+    ep = String((i/8+1)*10 + i%8+1);
+    temp.replace("{map-"+ep+"}", ma2.maFaders[i*3]);
+    temp.replace("{maf-"+ep+"}", ma2.maFaders[i*3+1]);
+  }
+  temp.replace("{main-dev}", ma2.listenDevice);
+  temp.replace("{main-grp}", ma2.listenGroup);
+  switch(ma2.listenFormat){
+    case 1:temp.replace("{main-f1}", "selected");break;
+    case 2:temp.replace("{main-f2}", "selected");break;
+    case 0x7f:temp.replace("{main-f3}", "selected");break;
+  }
+  temp.replace("{maout-dev}", ma2.sendDevice);
+  temp.replace("{maout-grp}", ma2.sendGroup);
+  switch(ma2.sendFormat){
+    case 1:temp.replace("{maout-f1}", "selected");break;
+    case 2:temp.replace("{maout-f2}", "selected");break;
+    case 0x7f:temp.replace("{maout-f3}", "selected");break;
+  }
+  switch(ma2.sendTo){
+    case 1:temp.replace("{maout-s1}", "selected");break;
+    case 2:temp.replace("{maout-s2}", "selected");break;
+    case 0x7f:temp.replace("{maout-s3}", "selected");break;
+  }
+
+
+
+
+
 
   switch(net.netMode){
     case 1:temp.replace("{net-1}", "selected");break;
@@ -417,6 +559,7 @@ void generateIndex(){
     case 1:temp.replace("{op-1}", "selected");break;
     case 2:temp.replace("{op-2}", "selected");break;
     case 3:temp.replace("{op-3}", "selected");break;
+    case 4:temp.replace("{op-4}", "selected");break;
     case 6:temp.replace("{op-6}", "selected");break;
     case 7:temp.replace("{op-7}", "selected");break;
     case 8:temp.replace("{op-8}", "selected");break;
@@ -426,6 +569,7 @@ void generateIndex(){
   temp.replace("{op-1}", "");
   temp.replace("{op-2}", "");
   temp.replace("{op-3}", "");
+  temp.replace("{op-4}", "");
   temp.replace("{op-6}", "");
   temp.replace("{op-7}", "");
   temp.replace("{op-8}", "");

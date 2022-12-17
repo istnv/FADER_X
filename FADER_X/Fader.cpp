@@ -3,6 +3,7 @@
 #include <Easing.h>
 
 extern byte globalPage;
+extern byte globalHalf; // access 2nd half of page for fader_4
 extern byte ledPageHues[4];
 extern int globalFaderTargets[255];
 extern byte globalFaderChannels[32];
@@ -159,6 +160,9 @@ void Fader::touchLoop(){
 }
 
 void Fader::motorLoop(){
+  if (this->mode == FMODE_Disabled) {
+    return 0;
+  }
 
   int target = globalFaderTargets[this->channel];
   this->easeSpeed = 100+abs(target-this->lastStartPosition)/2;
@@ -201,6 +205,9 @@ void Fader::motorLoop(){
 
 
 int Fader::getPositionTrimmed(){
+  if (this->mode == FMODE_Disabled) {
+    return 0;
+  }
   return min(max(this->getPosition(), 0), 1023);
 }
 int Fader::getPosition(){
@@ -222,7 +229,10 @@ void Fader::unpause(){
   }
 }
 void Fader::updateChannel(){
-  this->channel = globalFaderChannels[this->index+8*globalPage];
+  int nc = this->index+8*globalPage+globalHalf*4;
+  if (nc<32) {
+    this->channel = nc;
+  }
 }
 byte Fader::getChannel(){
   return this->channel;
@@ -231,29 +241,33 @@ int Fader::getMode(){
   return this->mode;
 }
 void Fader::setMode(int m){
-//   Serial.print("---------- mode ");
+  // Serial.print("---------- mode ");
+  // Serial.print(this->index);
 
-//   switch(m) {
-//     case FMODE_Disabled:
-//       Serial.println("Disabled");
-//       break;
-//     case FMODE_Rest:
-//       Serial.println("Rest");
-//       break;
-//     case FMODE_Touch:
-//         Serial.println("Touch");
-//       break;
-//     case FMODE_Motor:
-//         Serial.println("Motor");
-//       break;
-//     case FMODE_Pause:
-//         Serial.println("Pause");
-//       break;
-//   }
+  // switch(m) {
+  //   case FMODE_Disabled:
+  //     Serial.println(" Disabled");
+  //     break;
+  //   case FMODE_Rest:
+  //     Serial.println(" Rest");
+  //     break;
+  //   case FMODE_Touch:
+  //       Serial.println(" Touch");
+  //     break;
+  //   case FMODE_Motor:
+  //       Serial.println(" Motor");
+  //     break;
+  //   case FMODE_Pause:
+  //       Serial.println(" Pause");
+  //     break;
+  // }
   this->lastModeStart = millis();
   this->mode = m;
 }
 void Fader::setTargetToCurrentPosition(){
+  if (this->mode==FMODE_Disabled) {
+    return 0;
+  }
   this->rawPosition = analogRead(this->readPin);
   globalFaderTargets[this->channel] = this->getPosition();
 }
